@@ -16,6 +16,17 @@ gdb-multiarch \
   -ex "target remote | gdb-qemu -p 1234 qemu-ppc -- -L /usr/powerpc-linux-gnu -g 1234 demo
 ```
 
+# About
+`qemu-gdb` does the following:
+* Creates two pipes for the target program to send its `stdout`, `stderr`.
+* Forks a child process and sets the `stdout` and `stderr` using `dup2`.
+* Exec's the target program (passing the provided arguments).
+* Connects to the specified TCP debug port on the target program.
+* Forwards data from `gdb-qemu`'s `stdin` and `stdout` to the TCP port.
+* Forwards data from the target program's `stdout` and `stderr` to `gdb-qemu`s `stderr`.
+* Optionally logs to the specified log file.
+* Optionally logs trace information of the data transferred by the message pumps.
+
 # Usage
 ```
 Tool launching qemu-user for debugging
